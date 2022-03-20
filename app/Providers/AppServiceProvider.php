@@ -7,6 +7,7 @@ use App\Repositories\ProjectRepository;
 use App\RemoteServices\ProjectRemoteService;
 use App\Interfaces\Repositories\IProjectRepository;
 use App\Interfaces\RemoteServices\IProjectRemoteService;
+use Illuminate\Routing\UrlGenerator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        if (env('REDIRECT_HTTPS')) {
+            $this->app['request']->server->set('HTTPS', true);
+        }
         $this->app->bind(IProjectRepository::class, ProjectRepository::class);
         $this->app->bind(IProjectRemoteService::class, ProjectRemoteService::class);
         $this->app->when(ProjectRemoteService::class)
@@ -29,7 +33,10 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(UrlGenerator $url)
     {
+        if (env('REDIRECT_HTTPS')) {
+            $url->formatScheme('https://');
+        }
     }
 }
