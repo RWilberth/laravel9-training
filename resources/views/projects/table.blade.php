@@ -21,8 +21,8 @@
         <td>{{date("d/m/Y H:i", strtotime($project->created_at))}}</td>
         <td>{{date("d/m/Y H:i", strtotime($project->updated_at))}}</td>
         <td>
-            <a class="btn btn-outline-primary" href="{{url('/projects/'.$project->id.'/edit')}}">Actualizar</a>
-            <button class="btn btn-outline-primary btn-delete-project">Delete</button>
+            <a class="btn btn-outline-primary" href="{{url('/projects/'.$project->id.'/edit')}}"><span class="fas fa-pen-to-square"></span></a>
+            <button class="btn btn-outline-primary btn-delete-project"><span class="fas fa-trash-can"></span></button>
             <form method="post" action="{{url('/projects/'.$project->id)}}">
                 @method("DELETE")
                 @csrf

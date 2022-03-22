@@ -17,9 +17,11 @@ class ProjectRemoteService implements IProjectRemoteService {
     public function findById($id) {
         return Http::get("{$this->baseUrlProjectApi}/{$id}")->object();
     }
-    public function findPaginated($page = null,$elementsByPage = null, $holdId = null, $description = null, $plannedStart = null, $plannedEnd = null) {
+    public function findPaginated($page = null,$elementsByPage = null, $projectCode = null, $description = null, $plannedStart = null, $plannedEnd = null) {
         return Http::acceptJson()->get("{$this->baseUrlProjectApi}", [
-            'hold_id' => $holdId,
+            'page' => $page,
+            'elementsByPage' => $elementsByPage,
+            'project_code' => $projectCode,
             'description' => $description
         ])->object();
     }

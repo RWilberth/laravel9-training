@@ -4,8 +4,13 @@
 // Variables
 @import 'variables';
 
+
+//Fontawesome
+@import '~@fortawesome/fontawesome-free/css/all.css';
+
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 @import '~bootstrap-icons/font/bootstrap-icons';
+//libs
 @import '~jquery-ui/themes/base/all.css';
 @import 'lib/datepicker';

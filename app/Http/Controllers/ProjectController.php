@@ -30,8 +30,8 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $page = $request->query('page', 1);
-        $description = $request->input('description');
-        $code = $request->input('code');
+        $description = $request->query('description');
+        $code = $request->query('code');
         $projectsDataPaginated = $this->projectRemoteService->findPaginated($page, 10, $code, $description);
         $lastPage = $projectsDataPaginated->meta->last_page;
         return view('projects.index', [

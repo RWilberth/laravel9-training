@@ -64,7 +64,7 @@
     </div>
     <div class="col-12 my-1">
         <div class="float-end">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-outline-primary"><span class="fas fa-floppy-disk"></span> Save</button>
         </div>
     </div>
 </form>

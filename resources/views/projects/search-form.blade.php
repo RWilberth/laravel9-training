@@ -1,4 +1,4 @@
-<form method="POST" action="{{url('/projects')}}" class="row">
+<form method="GET" action="{{url('/projects')}}" class="row">
     @csrf
     <div class="col-md-6">
         <label for="description" class="form-label">Description</label>
@@ -10,7 +10,7 @@
     </div>
     <div class="col-12 my-1">
         <div class="float-end">
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="btn btn-outline-primary"> <span class="fas fa-magnifying-glass"></span> Search</button>
         </div>
     </div>
 </form>

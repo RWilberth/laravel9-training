@@ -37,9 +37,6 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{url('/projects')}}">Projects</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{url('/activities')}}">Activities</a>
-                        </li>
                     </ul>
                 </div>
             </div>
