@@ -31,11 +31,11 @@ class ProjectApiController extends Controller
     public function index(Request $request)
     {
         $elementsByPage = $request->query('elementsByPage', 10);
-        $holdId = $request->query('hold_id');
+        $projectCode = $request->query('project_code');
         $description = $request->query('description');
         $plannedStart = $request->query('planned_start');
         $plannedEnd = $request->query('planned_end');
-        $projects = $this->projectRepository->findPaginated($elementsByPage, $holdId, $description, $plannedStart, $plannedEnd);
+        $projects = $this->projectRepository->findPaginated($elementsByPage, $projectCode, $description, $plannedStart, $plannedEnd);
         return new ProjectListResource($projects);
     }
 

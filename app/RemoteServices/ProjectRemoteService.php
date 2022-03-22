@@ -15,18 +15,21 @@ class ProjectRemoteService implements IProjectRemoteService {
     }
 
     public function findById($id) {
-        return Http::get("{$this->baseUrlProjectApi}/{$id}")->json();
+        return Http::get("{$this->baseUrlProjectApi}/{$id}")->object();
     }
     public function findPaginated($page = null,$elementsByPage = null, $holdId = null, $description = null, $plannedStart = null, $plannedEnd = null) {
-        return Http::acceptJson()->get("{$this->baseUrlProjectApi}")->json();
+        return Http::acceptJson()->get("{$this->baseUrlProjectApi}", [
+            'hold_id' => $holdId,
+            'description' => $description
+        ])->object();
     }
     public function create($project) {
-
+        return Http::acceptJson()->post("{$this->baseUrlProjectApi}", $project)->object();
     }
     public function update($id, $project) {
-
+        return Http::acceptJson()->put("{$this->baseUrlProjectApi}/{$id}", $project)->object();
     }
     public function delete($id) {
-
+        return Http::acceptJson()->delete("{$this->baseUrlProjectApi}/{$id}")->object();
     }
 }

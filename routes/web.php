@@ -14,9 +14,12 @@ use App\Http\Controllers\ProjectController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 
 Route::resource('projects', ProjectController::class);
+Route::post('/projects', [ProjectController::class, 'index']);
+Route::post('/projects/create', [ProjectController::class, 'store']);
+Route::put('/projects/{project}/edit', [ProjectController::class, 'update']);
+
+Auth::routes();
+
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

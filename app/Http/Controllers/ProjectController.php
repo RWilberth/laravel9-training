@@ -6,6 +6,8 @@ use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Interfaces\RemoteServices\IProjectRemoteService;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ProjectController extends Controller
 {
@@ -22,11 +24,22 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        var_dump($this->projectRemoteService->findPaginated());
+        $page = $request->query('page', 1);
+        $description = $request->input('description');
+        $code = $request->input('code');
+        $projectsDataPaginated = $this->projectRemoteService->findPaginated($page, 10, $code, $description);
+        $lastPage = $projectsDataPaginated->meta->last_page;
+        return view('projects.index', [
+            'projectsDataPaginated' => $projectsDataPaginated,
+            'formInputs' => $request->input(),
+            'currentPage' => $page,
+            'lastPage' => $lastPage
+        ]);
     }
 
     /**
@@ -36,7 +49,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('projects.create');
     }
 
     /**
@@ -47,7 +60,14 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        $result = $this->projectRemoteService->create([
+            "hold_id" => $request->input('hold_id'),
+            'project_code' => $request->input('code'),
+            'description' => $request->input('description'),
+            'planned_start' => Carbon::createFromFormat("d/m/Y", $request->input('planned_start'))->format('Y-m-d'),
+            'planned_end' => Carbon::createFromFormat("d/m/Y", $request->input('planned_end'))->format('Y-m-d')
+        ]);
+        return redirect('/projects')->with('success', 'Contact saved!');
     }
 
     /**
@@ -58,7 +78,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        return view('projects.create');
     }
 
     /**
@@ -67,9 +87,12 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project)
+    public function edit(Request $request)
     {
-        //
+        $project = $this->projectRemoteService->findById($request->project)->data;
+        $project->planned_start = Carbon::createFromFormat("Y-m-d", $project->planned_start)->format('d/m/Y');
+        $project->planned_end = Carbon::createFromFormat("Y-m-d", $project->planned_end)->format('d/m/Y');
+        return view('projects.update', ['project' => $project, 'isUpdate' => true]);
     }
 
     /**
@@ -79,19 +102,27 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProjectRequest $request, Project $project)
+    public function update(UpdateProjectRequest $request)
     {
-        //
+        $result = $this->projectRemoteService->update($request->project, [
+            "hold_id" => $request->input('hold_id'),
+            'project_code' => $request->input('code'),
+            'description' => $request->input('description'),
+            'planned_start' => Carbon::createFromFormat("d/m/Y", $request->input('planned_start'))->format('Y-m-d'),
+            'planned_end' => Carbon::createFromFormat("d/m/Y", $request->input('planned_end'))->format('Y-m-d')
+        ]);
+        return redirect('/projects')->with('success', 'Contact saved!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Project  $project
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy(Request $request)
     {
-        //
+        $this->projectRemoteService->delete($request->project);
+        return redirect('/projects')->with('success', 'Contact saved!');
     }
 }

@@ -11,10 +11,10 @@ class ProjectRepository  implements IProjectRepository
         return Project::findOrFail($id);
     }
 
-    public function findPaginated($elementsByPage, $holdId, $description, $plannedStart, $plannedEnd){
+    public function findPaginated($elementsByPage, $projectCode, $description, $plannedStart, $plannedEnd){
         $query = Project::select();
-        if($holdId) {
-            $query = $query->where('hold_id', $holdId);
+        if($projectCode) {
+            $query = $query->where('project_code', $projectCode);
         }
         if($description) {
             $query = $query->where('description', 'like', $description.'%');
